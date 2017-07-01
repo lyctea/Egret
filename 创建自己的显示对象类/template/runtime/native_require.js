@@ -12,6 +12,7 @@ var game_file_list = [
 	"bin-debug/LoadingUI.js",
 	"bin-debug/Main.js",
 	"bin-debug/MyGrid.js",
+	"bin-debug/Position.js",
 	//----auto game_file_list end----
 ];
 
