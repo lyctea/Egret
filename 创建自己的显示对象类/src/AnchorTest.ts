@@ -43,10 +43,44 @@ class AnchorTest extends egret.DisplayObjectContainer {
            }
            */
 
-        //通过触摸移动显示对象
-        //您可以通过触摸来移动显示对象，当手指按到屏幕时监听 TOUCH_MOVE 事件，然后每次手指移动时都会调用此函数，
-        //使拖动的对象跳到手指所在的x,y坐标。当手指离开屏幕后取消监听，对象停止跟随。
-        
+        /*
+           //通过触摸移动显示对象
+           //您可以通过触摸来移动显示对象，当手指按到屏幕时监听 TOUCH_MOVE 事件，然后每次手指移动时都会调用此函数，
+           //使拖动的对象跳到手指所在的x,y坐标。当手指离开屏幕后取消监听，对象停止跟随。
+   
+           var offsetX: number;
+           var offsetY: number;
+           //画一个红色的圆
+           var circle: egret.Shape = new egret.Shape();
+           circle.graphics.beginFill(0xff0000);
+           circle.graphics.drawCircle(25, 25, 25);
+           circle.graphics.endFill();
+           this.addChild(circle);
+           //手指按到屏幕，触发 startMove 方法
+           circle.touchEnabled = true;
+           circle.addEventListener(egret.TouchEvent.TOUCH_BEGIN, startMove, this);
+           //手指离开屏幕，触发 stopMove 方法
+           circle.addEventListener(egret.TouchEvent.TOUCH_END, stopMove, this);
+           function startMove(e: egret.TouchEvent): void {
+               //计算手指和圆形的距离
+               offsetX = e.stageX - circle.x;
+               offsetY = e.stageY - circle.y;
+               //手指在屏幕上移动，会触发 onMove 方法
+               this.stage.addEventListener(egret.TouchEvent.TOUCH_MOVE, onMove, this);
+           }
+           function stopMove(e: egret.TouchEvent) {
+               console.log(22);
+               //手指离开屏幕，移除手指移动的监听
+               this.stage.removeEventListener(egret.TouchEvent.TOUCH_MOVE, onMove, this);
+           }
+           function onMove(e: egret.TouchEvent): void {
+               //通过计算手指在屏幕上的位置，计算当前对象的坐标，达到跟随手指移动的效果
+               circle.x = e.stageX - offsetX;
+               circle.y = e.stageY - offsetY;
+           }
+           */
+        //要拖拽的对象
+        var draggedObject: egret.Shape;
         var offsetX: number;
         var offsetY: number;
         //画一个红色的圆
@@ -55,15 +89,28 @@ class AnchorTest extends egret.DisplayObjectContainer {
         circle.graphics.drawCircle(25, 25, 25);
         circle.graphics.endFill();
         this.addChild(circle);
-        //手指按到屏幕，触发 startMove 方法
+        //画一个蓝色的正方形
+        var square: egret.Shape = new egret.Shape();
+        square.graphics.beginFill(0x0000ff);
+        square.graphics.drawRect(0, 0, 100, 100);
+        square.graphics.endFill();
+        this.addChild(square);
+        //增加圆形的触摸监听
         circle.touchEnabled = true;
         circle.addEventListener(egret.TouchEvent.TOUCH_BEGIN, startMove, this);
-        //手指离开屏幕，触发 stopMove 方法
         circle.addEventListener(egret.TouchEvent.TOUCH_END, stopMove, this);
+        //增加正方形的触摸监听
+        square.touchEnabled = true;
+        square.addEventListener(egret.TouchEvent.TOUCH_BEGIN, startMove, this);
+        square.addEventListener(egret.TouchEvent.TOUCH_END, stopMove, this);
         function startMove(e: egret.TouchEvent): void {
-            //计算手指和圆形的距离
-            offsetX = e.stageX - circle.x;
-            offsetY = e.stageY - circle.y;
+            //把手指按到的对象记录下来
+            draggedObject = e.currentTarget;
+            //计算手指和要拖动的对象的距离
+            offsetX = e.stageX - draggedObject.x;
+            offsetY = e.stageY - draggedObject.y;
+            //把触摸的对象放在显示列表的顶层
+            this.addChild(draggedObject);
             //手指在屏幕上移动，会触发 onMove 方法
             this.stage.addEventListener(egret.TouchEvent.TOUCH_MOVE, onMove, this);
         }
@@ -74,9 +121,10 @@ class AnchorTest extends egret.DisplayObjectContainer {
         }
         function onMove(e: egret.TouchEvent): void {
             //通过计算手指在屏幕上的位置，计算当前对象的坐标，达到跟随手指移动的效果
-            circle.x = e.stageX - offsetX;
-            circle.y = e.stageY - offsetY;
+            draggedObject.x = e.stageX - offsetX;
+            draggedObject.y = e.stageY - offsetY;
         }
+
 
     }
 }
