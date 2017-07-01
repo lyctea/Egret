@@ -14,8 +14,8 @@ var Main = (function (_super) {
         return _this;
     }
     Main.prototype.onAddToStage = function (event) {
-        var _myCrid = new MyGrid();
-        this.addChild(_myCrid);
+        var _anchorTest = new AnchorTest();
+        this.addChild(_anchorTest);
     };
     return Main;
 }(egret.DisplayObjectContainer));
