@@ -14,8 +14,8 @@ var Main = (function (_super) {
         return _this;
     }
     Main.prototype.onAddToStage = function (event) {
-        var _anchorTest = new AnchorTest();
-        this.addChild(_anchorTest);
+        var _move = new Move();
+        this.addChild(_move);
     };
     return Main;
 }(egret.DisplayObjectContainer));
