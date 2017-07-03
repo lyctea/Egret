@@ -1,0 +1,6 @@
+{
+  "autoGenerateExmlsList": true,
+  "exmls": [
+    "src/Game/SceneBeginSkin.exml"
+  ]
+}
