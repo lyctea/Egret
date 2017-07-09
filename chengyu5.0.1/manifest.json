@@ -8,7 +8,9 @@
 		"promise/bin/promise.js"
 	],
 	"game": [
+		"bin-debug/Game/Word.js",
 		"bin-debug/AssetAdapter.js",
+		"bin-debug/Game/AnswerWord.js",
 		"bin-debug/Game/LevelDataManager.js",
 		"bin-debug/Game/LevelIcon.js",
 		"bin-debug/Game/SceneBegin.js",
