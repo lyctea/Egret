@@ -2,6 +2,14 @@ class SceneLevels extends eui.Component {
     private btn_back: eui.Button
     private group_levels: eui.Group
     private img_arrow: eui.Image
+    private static shared:SceneLevels
+
+    public static Shared() {
+        if (SceneLevels.shared == null) {
+            SceneLevels.shared = new SceneLevels();
+        }
+        return SceneLevels.shared;
+    }
 
     public constructor() {
         super()
@@ -36,14 +44,14 @@ class SceneLevels extends eui.Component {
         }
 
         //跟踪箭头
-        this.img_arrow = new eui.Image();
-        this.img_arrow.source = RES.getRes("PageDownBtn_png");
-        this.img_arrow.anchorOffsetX = 124 / 2 - group.getChildAt(0).width / 2;
-        this.img_arrow.anchorOffsetY = 76;
-        this.img_arrow.touchEnabled = false;
-        this.img_arrow.x = group.getChildAt(0).x;
-        this.img_arrow.y = group.getChildAt(0).y;
-        group.addChild(this.img_arrow);
+        this.img_arrow = new eui.Image()
+        this.img_arrow.source = RES.getRes("PageDownBtn_png")
+        this.img_arrow.anchorOffsetX = 124 / 2 - group.getChildAt(0).width / 2
+        this.img_arrow.anchorOffsetY = 76
+        this.img_arrow.touchEnabled = false
+        this.img_arrow.x = group.getChildAt(0).x
+        this.img_arrow.y = group.getChildAt(0).y
+        group.addChild(this.img_arrow)
 
         //开启位图缓存模式
         group.cacheAsBitmap = true
@@ -52,7 +60,9 @@ class SceneLevels extends eui.Component {
         this.group_levels.scrollV = group.height - 1100
     }
     private onclick_back() {
-
+        //当点击选关页面的返回按钮，则回到开始界面
+        this.parent.addChild(SceneBegin.Shared())
+        this.parent.removeChild(this)
     }
     private onclick_level(e: egret.TouchEvent) {
         var icon = <LevelIcon>e.currentTarget
