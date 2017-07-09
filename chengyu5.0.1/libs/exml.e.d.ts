@@ -1,3 +1,5 @@
+declare class GameSettingSkin extends eui.Skin{
+}
 declare class LevelIconSkin extends eui.Skin{
 }
 declare class NewFile extends eui.Skin{

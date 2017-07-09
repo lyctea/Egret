@@ -142,8 +142,8 @@ class Main extends eui.UILayer {
      * Create scene interface
      */
     protected startCreateScene(): void {
-        //this.addChild(SceneBegin.Shared())
-        this.addChild(SceneLevels.Shared())
+        //this.addChild(SceneLevels.Shared())
+        this.addChild(SceneBegin.Shared());
     }
     /**
      * 根据name关键字创建一个Bitmap对象。name属性请参考resources/resource.json配置文件的内容。

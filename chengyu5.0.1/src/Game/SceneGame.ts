@@ -1,4 +1,8 @@
 class SceneGame extends eui.Component {
+	private group_win: eui.Group;//胜利界面的group控件
+	private btn_next: eui.Button;//下一个题目
+	private lb_explain: eui.Label;//解释
+	private lb_from: eui.Label;//来源
 	//单例
 	private static shared: SceneGame;
 	public static Shared() {
@@ -11,6 +15,7 @@ class SceneGame extends eui.Component {
 		super();
 		this.skinName = "src/Game/SceneGameSkin.exml";
 		this.btn_back.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onclick_back, this);
+		this.btn_next.addEventListener(egret.TouchEvent.TOUCH_TAP,this.onclick_next,this);
 
 	}
 	//对象变量
@@ -92,8 +97,25 @@ class SceneGame extends eui.Component {
 			}
 			if(check_str == LevelDataManager.Shared().GetLevel(this.levelIndex).answer){
 				//胜利
-				console.log("win");
+				this.showWin();
+			}else {
+				if(check_str.length == 4) {
+					SoundMenager.Shared().PlayWrong()
+				}
 			}
 		}
+	}
+	private onclick_next() {
+		//下一个题目
+		this.group_win.visible = false;
+		SceneLevels.Shared().OpenLevel(this.levelIndex + 1);
+		this.InitLevel(this.levelIndex + 1);
+
+	}
+	private showWin() {
+		this.group_win.visible = true;
+		var leveldata = LevelDataManager.Shared().GetLevel(this.levelIndex);
+		this.lb_from.text = leveldata.tip;
+		this.lb_explain.text = leveldata.content;
 	}
 }

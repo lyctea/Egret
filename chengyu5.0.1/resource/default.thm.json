@@ -1,6 +1,7 @@
 {
   "autoGenerateExmlsList": true,
   "exmls": [
+    "src/Game/GameSettingSkin.exml",
     "src/Game/LevelIconSkin.exml",
     "src/Game/SceneBeginSkin.exml",
     "src/Game/WordSkin.exml",
