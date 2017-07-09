@@ -68,14 +68,17 @@ class SceneLevels extends eui.Component {
         this.parent.addChild(SceneBegin.Shared());
         this.parent.removeChild(this);
     }
-    private onclick_level(e:egret.TouchEvent){
+    private onclick_level(e: egret.TouchEvent) {
         var icon = <LevelIcon>e.currentTarget;
-        if(this.sel_level != icon.Level){
+        if (this.sel_level != icon.Level) {
             this.img_arrow.x = icon.x;
             this.img_arrow.y = icon.y;
             this.sel_level = icon.Level;
-        }else{
+        } else {
             //进入并开始游戏
+            this.parent.addChild(SceneGame.Shared());
+            SceneGame.Shared().InitLevel(icon.Level);
+            this.parent.removeChild(this);
         }
     }
     //打开指定的关卡，如果大于最远关卡，则保存数据也跟着调整
