@@ -69,7 +69,7 @@ module fighter {
 			this.bg.start()
 			this.touchEnabled = true
 			this.enemyFightersTimer.addEventListener(egret.TimerEvent.TIMER, this.createEnemyFighter, this)
-			this.addEventListener(egret.TouchEvent.TOUCH_MOVE,this.touchHandler, this)
+			this.addEventListener(egret.TouchEvent.TOUCH_MOVE, this.touchHandler, this)
 			this.addEventListener(egret.Event.ENTER_FRAME, this.gameViewUpdate, this)
 
 			//我的飞机开火
@@ -135,31 +135,31 @@ module fighter {
 			for (; i < myBulletsCount; i++) {
 				bullet = this.myBullets[i]
 				bullet.y = 12 * speedOffset
-				if(bullet.y < bullet.height)
+				if (bullet.y < bullet.height)
 					delArr.push(bullet)
 			}
 			//在对象池中移除不再显示的子弹对象
-			for (i=0;i<delArr.length;i++) {
+			for (i = 0; i < delArr.length; i++) {
 				bullet = delArr[i]
 				this.removeChild(bullet)
 				fighter.Bullet.reclaim(bullet, 'b1')
-				this.myBullets.splice(this.myBullets.indexOf(bullet),1)
+				this.myBullets.splice(this.myBullets.indexOf(bullet), 1)
 			}
 			delArr = []
 			//敌人子弹运动
 			var enemyBulletsCount: number = this.enemyBullets.length
-			for(i=0;i<enemyBulletsCount;i++) {
+			for (i = 0; i < enemyBulletsCount; i++) {
 				bullet = this.enemyBullets[i]
-				bullet.y += 8*speedOffset
-				if(bullet.y > this.stageH)
+				bullet.y += 8 * speedOffset
+				if (bullet.y > this.stageH)
 					delArr.push(bullet)
 			}
 			//在对象池中移除不再显示的子弹对象
-			for (i=0;i<delArr.length;i++) {
+			for (i = 0; i < delArr.length; i++) {
 				bullet = delArr[i]
 				this.removeChild(bullet)
 				fighter.Bullet.reclaim(bullet, 'b2')
-				this.enemyBullets.splice(this.enemyBullets.indexOf(bullet),1)
+				this.enemyBullets.splice(this.enemyBullets.indexOf(bullet), 1)
 			}
 		}
 
@@ -167,12 +167,87 @@ module fighter {
 		 * 响应飞机触摸事件
 		 */
 		private touchHandler(evt: egret.TouchEvent): void {
-			if(evt.type == egret.TouchEvent.TOUCH_MOVE) {
-				var tx:number = evt.localX
-				tx = Math.max(0,tx)
+			if (evt.type == egret.TouchEvent.TOUCH_MOVE) {
+				var tx: number = evt.localX
+				tx = Math.max(0, tx)
 				tx = Math.min(this.stageW - this.myFighter.width, tx)
 				this.myFighter.x = tx
 			}
+		}
+
+		/**
+		 * 游戏碰撞检测
+		 */
+		private gameHitTest(): void {
+			var i: number, j: number
+			var bullet: fighter.Bullet
+			var theFighter: fighter.Airplane
+			//子弹数量
+			var myBulletsCount: number = this.myBullets.length
+			//敌机飞机数量
+			var enemyFighterCount: number = this.enemyFighters.length
+			//敌机子弹数量
+			var enemyBulletsCount: number = this.enemyBullets.length
+			//将需要消失的子弹和飞机记录
+			var delBullets: fighter.Bullet[] = []
+			var delFighter: fighter.Airplane[] = []
+			//我的子弹可以消灭敌机
+			for (i = 0; i < myBulletsCount; i++) {
+				bullet = this.myBullets[i]
+				for (j = 0; j < enemyFighterCount; j++) {
+					theFighter = this.enemyFighters[j]
+					if (fighter.GameUtil.hitTest(theFighter, bullet)) {
+						theFighter.blood -= 2
+						if (delBullets.indexOf(bullet) == -1)
+							delBullets.push(bullet)
+						if (theFighter.blood <= 0 && delFighter.indexOf(theFighter) == -1) {
+							delFighter.push(theFighter)
+						}
+					}
+				}
+			}
+
+			//敌人的子弹可以减少我的飞机血量
+			for (i = 0; i < enemyBulletsCount; i++) {
+				bullet = this.enemyBullets[i]
+				if (fighter.GameUtil.hitTest(this.myFighter, bullet)) {
+					this.myFighter.blood -= 1
+					if (delBullets.indexOf(bullet) == -1) {
+						delBullets.push(bullet)
+					}
+				}
+			}
+
+			//敌机的撞击可以消灭我
+			for (i = 0; i < enemyFighterCount; i++) {
+				theFighter = this.enemyFighters[i]
+				if (fighter.GameUtil.hitTest(this.myFighter, theFighter)) {
+					this.myFighter.blood -= 10
+				}
+			}
+			if (this.myFighter.blood <= 0) {
+				this.gameStop()
+			} else {
+				while (delBullets.length > 0) {
+					bullet = delBullets.pop()
+					this.removeChild(bullet)
+					if (bullet.textureName == 'b1')
+						this.myBullets.splice(this.myBullets.indexOf(bullet), 1)
+					else
+						this.enemyBullets.splice(this.enemyBullets.indexOf(bullet), 1)
+					fighter.Bullet.reclaim(bullet, bullet.textureName)
+				}
+				while (delFighter.length > 0) {
+					theFighter = delFighter.pop()
+					theFighter.stopFire()
+					theFighter.removeEventListener('createBullet', this.createBulletHandler, this)
+					this.removeChild(theFighter)
+					this.enemyFighters.splice(this.enemyFighters.indexOf(theFighter),1)
+					fighter.Airplane.reclaim(theFighter, 'f2')
+				}
+			}
+
+			
 		}
 	}
 }
