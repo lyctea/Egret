@@ -50,7 +50,7 @@ module fighter {
 
 			//创建可滚动的背景图
 			this.bg = new fighter.BgMap()
-			this.addChild(this.bg)
+			this.addChild(this.bg) 
 
 			//开始按钮
 			this.btnStart = fighter.createBitmapByName('btnStart')
@@ -106,9 +106,9 @@ module fighter {
 			this.removeChild(this.btnStart)
 			this.bg.start()
 			this.touchEnabled = true
-			this.addEventListener(egret.TouchEvent.TOUCH_MOVE, this.touchHandler, this)
 			this.addEventListener(egret.Event.ENTER_FRAME, this.gameViewUpdate, this)
-
+			//监听触摸事件
+			this.addEventListener(egret.TouchEvent.TOUCH_MOVE, this.touchHandler, this)
 			this.myFighter.x = (this.stageW-this.myFighter.width)/2;
 			//开火
             this.myFighter.fire()
@@ -222,10 +222,10 @@ module fighter {
 		 */
 		private touchHandler(evt: egret.TouchEvent): void {
 			if (evt.type == egret.TouchEvent.TOUCH_MOVE) {
-				var tx: number = evt.localX
-				tx = Math.max(0, tx)
-				tx = Math.min(this.stageW - this.myFighter.width, tx)
-				this.myFighter.x = tx
+                var tx:number = evt.localX
+				tx = Math.max(0,tx)
+				tx = Math.min(this.stageW-this.myFighter.width,tx)
+                this.myFighter.x = tx
 			}
 		}
 

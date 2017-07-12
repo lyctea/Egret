@@ -9111,15 +9111,6 @@ declare namespace egret.sys {
         changeSurfaceSize(): void;
         private $dirtyRegionPolicy;
         setDirtyRegionPolicy(policy: string): void;
-        /**
-         * @private
-         */
-        static $pixelRatio: number;
-        /**
-         * @private
-         */
-        static $setDevicePixelRatio(ratio: number): void;
-        private static $preMultiplyInto(other);
     }
 }
 declare namespace egret {
@@ -9137,8 +9128,6 @@ declare namespace egret {
         renderMode?: string;
         audioType?: number;
         screenAdapter?: sys.IScreenAdapter;
-        antialias?: boolean;
-        retina?: boolean;
     }): void;
     /**
      * Refresh the screen display
@@ -13023,7 +13012,7 @@ declare namespace egret {
          */
         $onAddToStage(stage: Stage, nestLevel: number): void;
         /**
-         * 不能重写$invalidateContentBounds，因为内部graphics调用clear时会触发$invalidateContentBounds这个方法，从而导致死循环。
+         * 不能重写$invalidateContentBounds，因为内部graphics调用clear时会触发$invalidateContentBounds这狗方法，从而导致死循环。
          */
         $invalidateTextField(): void;
         $update(dirtyRegionPolicy: string, bounds?: Rectangle): boolean;
@@ -13407,10 +13396,10 @@ declare namespace egret {
 declare namespace egret {
     /**
     * @language en_US
-    * The Base64Util class provides methods for encoding and decoding base64.
+    * The ByteArray class provides methods for encoding and decoding base64.
     * @version Egret 2.4
     * @platform Web,Native
-    * @includeExample egret/utils/Base64Util.ts
+    * @includeExample egret/utils/ByteArray.ts
     */
     /**
      * @language zh_CN

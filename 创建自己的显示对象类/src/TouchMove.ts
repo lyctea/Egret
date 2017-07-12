@@ -1,0 +1,4 @@
+class TouchMove {
+	public constructor() {
+	}
+}

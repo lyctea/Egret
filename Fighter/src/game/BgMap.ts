@@ -25,14 +25,18 @@ module fighter {
 			this.removeEventListener(egret.Event.ADDED_TO_STAGE, this.onAddToStage, this)
 			this.stageW = this.stage.stageWidth
 			this.stageH = this.stage.stageHeight
+			
 			var texture: egret.Texture = RES.getRes('bgImage')
-			var textureHeight = texture.textureHeight
+			this.textureHeight = texture.textureHeight
+			
 			//计算当前屏幕中，需要图片的数量
 			this.rowCount = Math.ceil(this.stageH / this.textureHeight) + 1
 			this.bmpArr = []
 			//创建这些图片，并设置y坐标，让他们链接起来
 			for (var i: number = 0; i < this.rowCount; i++) {
 				var bgBmp: egret.Bitmap = fighter.createBitmapByName('bgImage')
+				bgBmp.width = this.stage.stageWidth
+				
 				bgBmp.y = this.textureHeight * i - (this.textureHeight * this.rowCount - this.stageH)
 				this.bmpArr.push(bgBmp)
 				this.addChild(bgBmp)
