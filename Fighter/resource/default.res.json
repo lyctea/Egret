@@ -1,50 +1,50 @@
 {
 	"groups": [
 		{
-			"keys": "bg_jpg,egret_icon_png,description_json,b1_png,b2_png,btn_start_png,f1_png,f2_png",
+			"keys": "bgImage,description_json,b1,b2,btnStart,f1,f2",
 			"name": "preload"
 		}
 	],
 	"resources": [
 		{
-			"name": "bg_jpg",
+			"url": "assets/bg.jpg",
 			"type": "image",
-			"url": "assets/bg.jpg"
+			"name": "bgImage"
 		},
 		{
-			"name": "egret_icon_png",
+			"url": "assets/egret_icon.png",
 			"type": "image",
-			"url": "assets/egret_icon.png"
+			"name": "egret_icon_png"
 		},
 		{
-			"name": "description_json",
+			"url": "config/description.json",
 			"type": "json",
-			"url": "config/description.json"
+			"name": "description_json"
 		},
 		{
-			"name": "b1_png",
+			"url": "assets/b1.png",
 			"type": "image",
-			"url": "assets/b1.png"
+			"name": "b1"
 		},
 		{
-			"name": "b2_png",
+			"url": "assets/b2.png",
 			"type": "image",
-			"url": "assets/b2.png"
+			"name": "b2"
 		},
 		{
-			"name": "btn_start_png",
+			"url": "assets/btn_start.png",
 			"type": "image",
-			"url": "assets/btn_start.png"
+			"name": "btnStart"
 		},
 		{
-			"name": "f1_png",
+			"url": "assets/f1.png",
 			"type": "image",
-			"url": "assets/f1.png"
+			"name": "f1"
 		},
 		{
-			"name": "f2_png",
+			"url": "assets/f2.png",
 			"type": "image",
-			"url": "assets/f2.png"
+			"name": "f2"
 		}
 	]
 }
