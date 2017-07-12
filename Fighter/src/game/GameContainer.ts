@@ -130,14 +130,13 @@ module fighter {
 			var enemyFighter: fighter.Airplane = fighter.Airplane.produce('f2', 1000)
 			//随机生成坐标
 			enemyFighter.x = Math.random() * (this.stageW - enemyFighter.width)
-			//enemyFighter.y = -enemyFighter.height - Math.random() * 300
-			enemyFighter.y = 20
+			enemyFighter.y = -enemyFighter.height - Math.random() * 300
 			enemyFighter.addEventListener('createBullet', this.createBulletHandler, this)
 			enemyFighter.fire()
 			this.addChildAt(enemyFighter, this.numChildren - 1)
 			this.enemyFighters.push(enemyFighter)
 		}
-
+   
 		/**
 		 * 创建子弹处理函数
 		 */
@@ -170,11 +169,11 @@ module fighter {
 			var fps: number = 1000 / (nowTime - this.__lastTime)
 			this.__lastTime = nowTime
 			var speedOffset: number = 60 / fps
+
 			//我的子弹运动
 			var i: number = 0
 			var bullet: fighter.Bullet
 			var myBulletsCount: number = this.myBullets.length
-			var delArr: any[] = []
 			for (; i < myBulletsCount; i++) {
 				bullet = this.myBullets[i]
 				if (bullet.y < -bullet.height){
@@ -184,7 +183,7 @@ module fighter {
 					i--
 					myBulletsCount--
 				}
-				bullet.y = 12 * speedOffset
+				bullet.y -= 12 * speedOffset
 			}
 			//敌人飞机运动
 			var theFighter: fighter.Airplane
@@ -202,31 +201,20 @@ module fighter {
 				}
 				theFighter.y += 4 * speedOffset
 			}
-			
-
-			//在对象池中移除不再显示的子弹对象
-			for (i = 0; i < delArr.length; i++) {
-				bullet = delArr[i]
-				this.removeChild(bullet)
-				fighter.Bullet.reclaim(bullet, 'b1')
-				this.myBullets.splice(this.myBullets.indexOf(bullet), 1)
-			}
-			delArr = []
 			//敌人子弹运动
 			var enemyBulletsCount: number = this.enemyBullets.length
 			for (i = 0; i < enemyBulletsCount; i++) {
 				bullet = this.enemyBullets[i]
+				if (bullet.y > this.stageH) {
+					this.removeChild(bullet)
+					Bullet.reclaim(bullet,'b2')
+					this.enemyBullets.splice(i,1)
+					i--
+					enemyBulletsCount--
+				}
 				bullet.y += 8 * speedOffset
-				if (bullet.y > this.stageH)
-					delArr.push(bullet)
 			}
-			//在对象池中移除不再显示的子弹对象
-			for (i = 0; i < delArr.length; i++) {
-				bullet = delArr[i]
-				this.removeChild(bullet)
-				fighter.Bullet.reclaim(bullet, 'b2')
-				this.enemyBullets.splice(this.enemyBullets.indexOf(bullet), 1)
-			}
+			this.gameHitTest();
 		}
 
 		/**
