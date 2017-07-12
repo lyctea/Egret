@@ -21,6 +21,8 @@ module fighter {
 		//敌人的子弹
 		private enemyBullets: fighter.Bullet[] = []
 
+		//时间
+		private __lastTime: number
 
 
 		public constructor() {
@@ -69,6 +71,8 @@ module fighter {
 			//我的飞机开火
 			this.myFighter.fire()
 			this.enemyFightersTimer.addEventListener(egret.TimerEvent.TIMER, this.createEnemyFighter, this)
+
+			this.addEventListener(egret.Event.ENTER_FRAME, this.gameViewUpdate, this)
 			this.enemyFightersTimer.start()
 
 			//子弹的创建是由监听‘createBullet’ 事件驱动的，为我的飞机和敌机添加事件
@@ -110,6 +114,51 @@ module fighter {
 				bullet.y = theFighter.y + 10
 				this.addChildAt(bullet, this.numChildren - 1 - this.enemyFighters.length)
 				this.enemyBullets.push(bullet)
+			}
+		}
+
+		/**
+		 * 游戏画面更新
+		 */
+		private gameViewUpdate(evt: egret.Event): void {
+			//为了防止FPS下降造成回收慢，生成快，进而导致DRAW数量失控，需要计算一个系数，当FPS下降的时候，让运动速度加快
+			var nowTime: number = egret.getTimer()
+			var fps: number = 1000 / (nowTime - this.__lastTime)
+			this.__lastTime = nowTime
+			var speedOffset: number = 60 / fps
+			//我的子弹运动
+			var i: number = 0
+			var bullet: fighter.Bullet
+			var myBulletsCount: number = this.myBullets.length
+			var delArr: any[] = []
+			for (; i < myBulletsCount; i++) {
+				bullet = this.myBullets[i]
+				bullet.y = 12 * speedOffset
+				if(bullet.y < bullet.height)
+					delArr.push(bullet)
+			}
+			//在对象池中移除不再显示的子弹对象
+			for (i=0;i<delArr.length;i++) {
+				bullet = delArr[i]
+				this.removeChild(bullet)
+				fighter.Bullet.reclaim(bullet, 'b1')
+				this.myBullets.splice(this.myBullets.indexOf(bullet),1)
+			}
+			delArr = []
+			//敌人子弹运动
+			var enemyBulletsCount: number = this.enemyBullets.length
+			for(i=0;i<enemyBulletsCount;i++) {
+				bullet = this.enemyBullets[i]
+				bullet.y += 8*speedOffset
+				if(bullet.y > this.stageH)
+					delArr.push(bullet)
+			}
+			//在对象池中移除不再显示的子弹对象
+			for (i=0;i<delArr.length;i++) {
+				bullet = delArr[i]
+				this.removeChild(bullet)
+				fighter.Bullet.reclaim(bullet, 'b2')
+				this.enemyBullets.splice(this.enemyBullets.indexOf(bullet),1)
 			}
 		}
 	}
