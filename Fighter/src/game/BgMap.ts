@@ -51,16 +51,16 @@ module fighter {
 		 * 逐帧运动
 		 */
 		private enterFrameHandler(event: egret.Event): void {
-			for (var i: number = 0; i < this.rowCount; i++) {
-				var bgBmp: egret.Bitmap = this.bmpArr[i]
-				bgBmp.y += this.speed
-				//判断超出屏幕后，回到队首， 这样可以实现循环反复
-				if (bgBmp.y > this.stageH) {
-					bgBmp.y = this.bmpArr[0].y - this.textureHeight
-					this.bmpArr.pop()
-					this.bmpArr.unshift(bgBmp)
-				}
-			}
+            for (var i: number = 0; i < this.rowCount; i++) {
+                var bgBmp: egret.Bitmap = this.bmpArr[i];
+                bgBmp.y += this.speed;
+                //判断超出屏幕后，回到队首，这样来实现循环反复
+                if (bgBmp.y > this.stageH) {
+                    bgBmp.y = this.bmpArr[0].y - this.textureHeight;
+                    this.bmpArr.pop();
+                    this.bmpArr.unshift(bgBmp);
+                }
+            }
 		}
 
 		/**

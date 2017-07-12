@@ -55,6 +55,7 @@ module fighter {
 			//开始按钮
 			this.btnStart = fighter.createBitmapByName('btnStart')
 			this.btnStart.x = (this.stageW - this.btnStart.width) / 2
+			this.btnStart.y = (this.stageH - this.btnStart.height) / 2
 			this.btnStart.touchEnabled = true
 			this.btnStart.addEventListener(egret.TouchEvent.TOUCH_TAP, this.gameStart, this)
 			this.addChild(this.btnStart)
@@ -63,25 +64,63 @@ module fighter {
 			this.myFighter = new fighter.Airplane(RES.getRes('f1'), 100)
 			this.myFighter.y = this.stageH - this.myFighter.height - 50
 			this.addChild(this.myFighter)
-		}
 
+			this.scorePanel = new fighter.ScorePanel()
+			//预创建
+            this.preCreatedInstance();
+		}
+		/**预创建一些对象，减少游戏时的创建消耗*/
+		private preCreatedInstance(): void {
+			var i: number = 0;
+			var objArr: any[] = [];
+			for (i = 0; i < 20; i++) {
+				var bullet = fighter.Bullet.produce("b1");
+				objArr.push(bullet);
+			}
+			for (i = 0; i < 20; i++) {
+				bullet = objArr.pop();
+				fighter.Bullet.reclaim(bullet, "b1");
+			}
+			for (i = 0; i < 20; i++) {
+				var bullet = fighter.Bullet.produce("b2");
+				objArr.push(bullet);
+			}
+			for (i = 0; i < 20; i++) {
+				bullet = objArr.pop();
+				fighter.Bullet.reclaim(bullet, "b2");
+			}
+			for (i = 0; i < 20; i++) {
+				var enemyFighter: fighter.Airplane = fighter.Airplane.produce("f2", 1000);
+				objArr.push(enemyFighter);
+			}
+			for (i = 0; i < 20; i++) {
+				enemyFighter = objArr.pop();
+				fighter.Airplane.reclaim(enemyFighter, "f2");
+			}
+		}
 		/**
 		 * 游戏开始
 		 */
 		private gameStart(): void {
+			this.myScore = 0
+			this.removeChild(this.btnStart)
 			this.bg.start()
 			this.touchEnabled = true
-			this.enemyFightersTimer.addEventListener(egret.TimerEvent.TIMER, this.createEnemyFighter, this)
 			this.addEventListener(egret.TouchEvent.TOUCH_MOVE, this.touchHandler, this)
 			this.addEventListener(egret.Event.ENTER_FRAME, this.gameViewUpdate, this)
 
-			//我的飞机开火
-			this.myFighter.fire()
-			this.enemyFightersTimer.start()
-
+			this.myFighter.x = (this.stageW-this.myFighter.width)/2;
+			//开火
+            this.myFighter.fire()
+            this.myFighter.blood = 10
 			//子弹的创建是由监听‘createBullet’ 事件驱动的，为我的飞机和敌机添加事件
 			this.myFighter.addEventListener('createBullet', this.createBulletHandler, this)
 
+			this.enemyFightersTimer.addEventListener(egret.TimerEvent.TIMER, this.createEnemyFighter, this)
+			this.enemyFightersTimer.start()
+
+            if(this.scorePanel.parent == this)
+                this.removeChild(this.scorePanel)
 		}
 
 		/**
@@ -91,7 +130,8 @@ module fighter {
 			var enemyFighter: fighter.Airplane = fighter.Airplane.produce('f2', 1000)
 			//随机生成坐标
 			enemyFighter.x = Math.random() * (this.stageW - enemyFighter.width)
-			enemyFighter.y = -enemyFighter.height - Math.random() * 3000
+			//enemyFighter.y = -enemyFighter.height - Math.random() * 300
+			enemyFighter.y = 20
 			enemyFighter.addEventListener('createBullet', this.createBulletHandler, this)
 			enemyFighter.fire()
 			this.addChildAt(enemyFighter, this.numChildren - 1)
@@ -137,10 +177,33 @@ module fighter {
 			var delArr: any[] = []
 			for (; i < myBulletsCount; i++) {
 				bullet = this.myBullets[i]
+				if (bullet.y < -bullet.height){
+					this.removeChild(bullet)
+					fighter.Bullet.reclaim(bullet,'b1')
+					this.myBullets.splice(i,1)
+					i--
+					myBulletsCount--
+				}
 				bullet.y = 12 * speedOffset
-				if (bullet.y < bullet.height)
-					delArr.push(bullet)
 			}
+			//敌人飞机运动
+			var theFighter: fighter.Airplane
+			var enemyFighterCount: number = this.enemyFighters.length
+			for (i = 0; i < enemyFighterCount; i++) {
+				theFighter = this.enemyFighters[i]
+				if (theFighter.y > this.stage.stageHeight) {
+					this.removeChild(theFighter)
+					fighter.Airplane.reclaim(theFighter, 'f2')
+					//theFighter.removeEventListener("createBullet",this.createEnemyBulletHandler,this)
+					theFighter.stopFire()
+					this.enemyFighters.splice(i, 1)
+					i--
+					enemyFighterCount--
+				}
+				theFighter.y += 4 * speedOffset
+			}
+			
+
 			//在对象池中移除不再显示的子弹对象
 			for (i = 0; i < delArr.length; i++) {
 				bullet = delArr[i]
