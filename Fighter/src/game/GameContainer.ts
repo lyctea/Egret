@@ -247,7 +247,46 @@ module fighter {
 				}
 			}
 
-			
+
+		}
+
+		/**
+		 * 在游戏停止方法中，结束游戏
+		 */
+		private gameStop():void {
+			this.addChild(this.btnStart)
+			this.bg.pause()
+			this.removeEventListener(egret.Event.ENTER_FRAME, this.gameViewUpdate, this)
+			this.removeEventListener(egret.TouchEvent.TOUCH_MOVE, this.touchHandler, this)
+			this.myFighter.stopFire()
+			this.myFighter.removeEventListener('createBullet', this.createBulletHandler, this)
+			this.enemyFightersTimer.removeEventListener(egret.TimerEvent.TIMER, this.createEnemyFighter, this)
+
+			this.enemyFightersTimer.stop()
+
+			//清理子弹
+			var i:number = 0
+			var bullet:fighter.Bullet
+			while(this.myBullets.length > 0) {
+				bullet = this.myBullets.pop()
+				this.removeChild(bullet)
+				fighter.Bullet.reclaim(bullet, 'b1')
+			}
+			while(this.enemyBullets.length > 0) {
+				bullet = this.enemyBullets.pop()
+				this.removeChild(bullet)
+				fighter.Bullet.reclaim(bullet, 'b2')
+			}
+
+			//清理飞机
+			var theFighter: fighter.Airplane
+			while(this.enemyFighters.length > 0) {
+				theFighter = this.enemyFighters.pop()
+				theFighter.stopFire()
+				theFighter.removeEventListener('createBullet', this.createBulletHandler, this)
+				this.removeChild(theFighter)
+				fighter.Airplane.reclaim(theFighter, 'f2')
+			}
 		}
 	}
 }
