@@ -244,7 +244,7 @@ module fighter {
 			var enemyBulletsCount: number = this.enemyBullets.length
 			//将需要消失的子弹和飞机记录
 			var delBullets: fighter.Bullet[] = []
-			var delFighter: fighter.Airplane[] = []
+			var delFighters: fighter.Airplane[] = []
 			//我的子弹可以消灭敌机
 			for (i = 0; i < myBulletsCount; i++) {
 				bullet = this.myBullets[i]
@@ -254,8 +254,8 @@ module fighter {
 						theFighter.blood -= 2
 						if (delBullets.indexOf(bullet) == -1)
 							delBullets.push(bullet)
-						if (theFighter.blood <= 0 && delFighter.indexOf(theFighter) == -1) {
-							delFighter.push(theFighter)
+						if (theFighter.blood <= 0 && delFighters.indexOf(theFighter) == -1) {
+							delFighters.push(theFighter)
 						}
 					}
 				}
@@ -291,8 +291,9 @@ module fighter {
 						this.enemyBullets.splice(this.enemyBullets.indexOf(bullet), 1)
 					fighter.Bullet.reclaim(bullet, bullet.textureName)
 				}
-				while (delFighter.length > 0) {
-					theFighter = delFighter.pop()
+				this.myScore += delFighters.length
+				while (delFighters.length > 0) {
+					theFighter = delFighters.pop()
 					theFighter.stopFire()
 					theFighter.removeEventListener('createBullet', this.createBulletHandler, this)
 					this.removeChild(theFighter)
