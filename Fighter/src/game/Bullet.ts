@@ -17,7 +17,7 @@ module fighter {
 			if (dict.length > 0) {
 				bullet = dict.pop()
 			} else {
-				bullet = new fighter.Bullet(RES.getRes(textureName))
+				bullet = new fighter.Bullet(RES.getRes(textureName),textureName)
 			}
 			bullet.textureName = textureName
 			return bullet
@@ -35,10 +35,11 @@ module fighter {
 				dict.push(bullet)
 			}
 		}
-
+		//子弹类型名
 		public textureName: string
-		public constructor() {
-			super()
+		public constructor(texture:egret.Texture, textureName: string) {
+			super(texture)
+			this.textureName = textureName
 		}
 	}
 }

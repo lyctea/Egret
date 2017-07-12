@@ -20,7 +20,10 @@ module fighter {
 		private enemyFightersTimer: egret.Timer = new egret.Timer(1000)
 		//敌人的子弹
 		private enemyBullets: fighter.Bullet[] = []
-
+		//成绩显示
+		private scorePanel:fighter.ScorePanel
+		//我的成绩
+		private myScore:number = 0
 		//时间
 		private __lastTime: number
 
@@ -287,6 +290,12 @@ module fighter {
 				this.removeChild(theFighter)
 				fighter.Airplane.reclaim(theFighter, 'f2')
 			}
+
+			//显示成绩
+			this.scorePanel.showScore(this.myScore)
+			this.scorePanel.x = (this.stageW - this.scorePanel.width) / 2
+			this.scorePanel.y = 100
+			this.addChild(this.scorePanel)
 		}
 	}
 }

@@ -43,9 +43,9 @@ module fighter {
 		//定时器
 		private fireTimer: egret.Timer
 		//飞机生命值
-		private blood: number = 10
+		public blood: number = 10
 
-		public constructor() {
+		public constructor(texture:egret.Texture,fireDelay:number) {
 			super()
 			this.fireDelay = fireDelay
 			this.bmp = new egret.Bitmap(texture)
