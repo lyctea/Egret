@@ -67,12 +67,13 @@ module fighter {
 		 */
 		private gameStart(): void {
 			this.bg.start()
+			this.touchEnabled = true
+			this.enemyFightersTimer.addEventListener(egret.TimerEvent.TIMER, this.createEnemyFighter, this)
+			this.addEventListener(egret.TouchEvent.TOUCH_MOVE,this.touchHandler, this)
+			this.addEventListener(egret.Event.ENTER_FRAME, this.gameViewUpdate, this)
 
 			//我的飞机开火
 			this.myFighter.fire()
-			this.enemyFightersTimer.addEventListener(egret.TimerEvent.TIMER, this.createEnemyFighter, this)
-
-			this.addEventListener(egret.Event.ENTER_FRAME, this.gameViewUpdate, this)
 			this.enemyFightersTimer.start()
 
 			//子弹的创建是由监听‘createBullet’ 事件驱动的，为我的飞机和敌机添加事件
@@ -159,6 +160,18 @@ module fighter {
 				this.removeChild(bullet)
 				fighter.Bullet.reclaim(bullet, 'b2')
 				this.enemyBullets.splice(this.enemyBullets.indexOf(bullet),1)
+			}
+		}
+
+		/**
+		 * 响应飞机触摸事件
+		 */
+		private touchHandler(evt: egret.TouchEvent): void {
+			if(evt.type == egret.TouchEvent.TOUCH_MOVE) {
+				var tx:number = evt.localX
+				tx = Math.max(0,tx)
+				tx = Math.min(this.stageW - this.myFighter.width, tx)
+				this.myFighter.x = tx
 			}
 		}
 	}
