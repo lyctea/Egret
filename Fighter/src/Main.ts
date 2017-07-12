@@ -78,6 +78,10 @@ class Main extends egret.DisplayObjectContainer {
             RES.removeEventListener(RES.ResourceEvent.ITEM_LOAD_ERROR, this.onItemLoadError, this);
             this.createGameScene();
         }
+        
+        //游戏的主类开始实例化
+        var gameContainer:fighter.GameContainer = new fighter.GameContainer()
+        this.addChild(gameContainer)
     }
 
     /**
