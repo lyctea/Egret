@@ -5920,7 +5920,6 @@ declare namespace egret {
         height: number;
         /**
          * Original bitmap image.
-         * HTMLImageElement|HTMLCanvasElement|HTMLVideoElement
          * @version Egret 2.4
          * @platform Web,Native
          * @private
@@ -5928,7 +5927,6 @@ declare namespace egret {
          */
         /**
          * 原始位图图像。
-         * HTMLImageElement|HTMLCanvasElement|HTMLVideoElement
          * @version Egret 2.4
          * @platform Web,Native
          * @private
@@ -5968,20 +5966,6 @@ declare namespace egret {
          * webgl纹理生成后，是否删掉原始图像数据
          */
         $deleteSource: boolean;
-        /**
-         * Initializes a BitmapData object to refer to the specified source object.
-         * @param source The source object being referenced.
-         * @version Egret 2.4
-         * @platform Web,Native
-         * @language en_US
-         */
-        /**
-         * 创建一个引用指定 source 实例的 BitmapData 对象
-         * @param source 被引用的 source 实例
-         * @version Egret 2.4
-         * @platform Web,Native
-         * @language zh_CN
-         */
         constructor(source: any);
         static create(type: "arraybuffer", data: ArrayBuffer): BitmapData;
         static create(type: "base64", data: string): BitmapData;
@@ -9127,15 +9111,6 @@ declare namespace egret.sys {
         changeSurfaceSize(): void;
         private $dirtyRegionPolicy;
         setDirtyRegionPolicy(policy: string): void;
-        /**
-         * @private
-         */
-        static $pixelRatio: number;
-        /**
-         * @private
-         */
-        static $setDevicePixelRatio(ratio: number): void;
-        private static $preMultiplyInto(other);
     }
 }
 declare namespace egret {
@@ -9153,8 +9128,6 @@ declare namespace egret {
         renderMode?: string;
         audioType?: number;
         screenAdapter?: sys.IScreenAdapter;
-        antialias?: boolean;
-        retina?: boolean;
     }): void;
     /**
      * Refresh the screen display
@@ -9822,6 +9795,7 @@ declare namespace egret.sys {
      */
     let $requestRenderingFlag: boolean;
     /**
+     * @private
      * Egret心跳计时器
      */
     class SystemTicker {
@@ -9877,13 +9851,7 @@ declare namespace egret.sys {
          * @private
          */
         private frameInterval;
-        /**
-         * @private
-         */
         private frameDeltaTime;
-        /**
-         * @private
-         */
         private lastTimeStamp;
         /**
          * @private
@@ -9899,13 +9867,6 @@ declare namespace egret.sys {
          * ticker 花销的时间
          */
         private costEnterFrame;
-        /**
-         * @private
-         * 是否被暂停
-         */
-        private isPaused;
-        pause(): void;
-        resume(): void;
         /**
          * @private
          * 执行一次刷新
@@ -9935,32 +9896,11 @@ declare namespace egret.sys {
          */
         private callLaterAsyncs();
     }
-}
-declare module egret {
     /**
+     * @private
      * 心跳计时器单例
      */
-    let $ticker: sys.SystemTicker;
-    namespace lifecycle {
-        type LifecyclePlugin = (context: LifecycleContext) => void;
-        /**
-         * @private
-         */
-        let stage: egret.Stage;
-        /**
-         * @private
-         */
-        let contexts: LifecycleContext[];
-        class LifecycleContext {
-            pause(): void;
-            resume(): void;
-            onUpdate?: () => void;
-        }
-        let onResume: () => void;
-        let onPause: () => void;
-        function addLifecycleListener(plugin: LifecyclePlugin): void;
-    }
-    let ticker: sys.SystemTicker;
+    let $ticker: SystemTicker;
 }
 /**
  * @private
@@ -10225,18 +10165,6 @@ declare namespace egret.sys {
          * 顶点索引。
          */
         bounds: Rectangle;
-        /**
-         * 使用的混合模式
-         */
-        blendMode: number;
-        /**
-         * 相对透明度
-         */
-        alpha: number;
-        /**
-         * 颜色变换滤镜
-         */
-        filter: ColorMatrixFilter;
         /**
          * 绘制一次位图
          */
@@ -13084,7 +13012,7 @@ declare namespace egret {
          */
         $onAddToStage(stage: Stage, nestLevel: number): void;
         /**
-         * 不能重写$invalidateContentBounds，因为内部graphics调用clear时会触发$invalidateContentBounds这个方法，从而导致死循环。
+         * 不能重写$invalidateContentBounds，因为内部graphics调用clear时会触发$invalidateContentBounds这狗方法，从而导致死循环。
          */
         $invalidateTextField(): void;
         $update(dirtyRegionPolicy: string, bounds?: Rectangle): boolean;
@@ -13468,10 +13396,10 @@ declare namespace egret {
 declare namespace egret {
     /**
     * @language en_US
-    * The Base64Util class provides methods for encoding and decoding base64.
+    * The ByteArray class provides methods for encoding and decoding base64.
     * @version Egret 2.4
     * @platform Web,Native
-    * @includeExample egret/utils/Base64Util.ts
+    * @includeExample egret/utils/ByteArray.ts
     */
     /**
      * @language zh_CN
