@@ -1,0 +1,4 @@
+class SceneGame {
+	public constructor() {
+	}
+}
