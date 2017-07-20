@@ -1,5 +1,3 @@
-## 本项目来自Egret官方素材仓库，感谢作者分享 http://t.egret.com/work/99d3ffeea0af11e6aae5fa163e223ae3.html
-
 ## EUI��ϷӦ��ʾ��
 
 ʾ��չʾ��EUI����Ϸ�����е�ʹ�÷�����
