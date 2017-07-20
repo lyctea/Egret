@@ -7,19 +7,19 @@ var game_file_list = [
 	"libs/modules/eui/eui.js",
 	"libs/modules/res/res.js",
 	"libs/modules/tween/tween.js",
+	"bin-debug/Main.js",
+	"bin-debug/euisys/AssetAdapter.js",
 	"bin-debug/GameEvents.js",
 	"bin-debug/GamePages.js",
 	"bin-debug/HomeUI.js",
 	"bin-debug/LoadingUI.js",
-	"bin-debug/Main.js",
-	"bin-debug/Toast.js",
-	"bin-debug/TrueLoadingUI.js",
-	"bin-debug/euisys/AssetAdapter.js",
 	"bin-debug/euisys/ThemeAdapter.js",
 	"bin-debug/part/AboutUI.js",
 	"bin-debug/part/GoodsUI.js",
 	"bin-debug/part/HerosUI.js",
 	"bin-debug/part/ProfileUI.js",
+	"bin-debug/Toast.js",
+	"bin-debug/TrueLoadingUI.js",
 	//----auto game_file_list end----
 ];
 

@@ -1,15 +1,23 @@
 /**
  * Created by egret on 2016/1/25.
  */
+var __reflect = (this && this.__reflect) || function (p, c, t) {
+    p.__class__ = c, t ? t.push(c) : t = [c], p.__types__ = p.__types__ ? t.concat(p.__types__) : t;
+};
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
 var GoodsUI = (function (_super) {
     __extends(GoodsUI, _super);
     function GoodsUI() {
-        _super.call(this);
-        this.addEventListener(eui.UIEvent.COMPLETE, this.uiCompHandler, this);
-        this.skinName = "resource/custom_skins/goodsUISkin.exml";
+        var _this = _super.call(this) || this;
+        _this.addEventListener(eui.UIEvent.COMPLETE, _this.uiCompHandler, _this);
+        _this.skinName = "resource/custom_skins/goodsUISkin.exml";
+        return _this;
     }
-    var d = __define,c=GoodsUI,p=c.prototype;
-    p.uiCompHandler = function () {
+    GoodsUI.prototype.uiCompHandler = function () {
         var _this = this;
         console.log("\t\tGoodsUI uiCompHandler");
         /// 返回逻辑
@@ -29,25 +37,26 @@ var GoodsUI = (function (_super) {
         this.listGoods.dataProvider = new eui.ArrayCollection(dsListHeros);
         this.listGoods.itemRenderer = GoodsListIRSkin;
     };
-    p.createChildren = function () {
+    GoodsUI.prototype.createChildren = function () {
         _super.prototype.createChildren.call(this);
         //this.scrListGoods.horizontalScrollBar = null;
     };
     return GoodsUI;
 }(eui.Component));
-egret.registerClass(GoodsUI,'GoodsUI');
+__reflect(GoodsUI.prototype, "GoodsUI");
 var GoodsListIRSkin = (function (_super) {
     __extends(GoodsListIRSkin, _super);
     function GoodsListIRSkin() {
-        _super.call(this);
-        this.skinName = "goodsListIRSkin";
+        var _this = _super.call(this) || this;
+        _this.skinName = "goodsListIRSkin";
+        return _this;
     }
-    var d = __define,c=GoodsListIRSkin,p=c.prototype;
-    p.createChildren = function () {
+    GoodsListIRSkin.prototype.createChildren = function () {
         _super.prototype.createChildren.call(this);
     };
-    p.dataChanged = function () {
+    GoodsListIRSkin.prototype.dataChanged = function () {
     };
     return GoodsListIRSkin;
 }(eui.ItemRenderer));
-egret.registerClass(GoodsListIRSkin,'GoodsListIRSkin');
+__reflect(GoodsListIRSkin.prototype, "GoodsListIRSkin");
+//# sourceMappingURL=GoodsUI.js.map

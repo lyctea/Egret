@@ -1,16 +1,24 @@
 /**
  * Created by egret on 2016/1/20.
  */
+var __reflect = (this && this.__reflect) || function (p, c, t) {
+    p.__class__ = c, t ? t.push(c) : t = [c], p.__types__ = p.__types__ ? t.concat(p.__types__) : t;
+};
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
 var HomeUI = (function (_super) {
     __extends(HomeUI, _super);
     function HomeUI() {
-        _super.call(this);
+        var _this = _super.call(this) || this;
         //console.log( "new HomeUI 资源：", RES.getRes( "commonBg_jpg" ) );
-        this.addEventListener(eui.UIEvent.COMPLETE, this.uiCompHandler, this);
-        this.skinName = "resource/custom_skins/homeUISkin.exml";
+        _this.addEventListener(eui.UIEvent.COMPLETE, _this.uiCompHandler, _this);
+        _this.skinName = "resource/custom_skins/homeUISkin.exml";
+        return _this;
     }
-    var d = __define,c=HomeUI,p=c.prototype;
-    p.uiCompHandler = function () {
+    HomeUI.prototype.uiCompHandler = function () {
         console.log("HomeUI uiCompHandler");
         this.mbtnProfile.addEventListener(egret.TouchEvent.TOUCH_TAP, this.mbtnHandler, this);
         this.mbtnHeros.addEventListener(egret.TouchEvent.TOUCH_TAP, this.mbtnHandler, this);
@@ -20,7 +28,7 @@ var HomeUI = (function (_super) {
         /// 首次加载完成首先显示home
         this.goHome();
     };
-    p.resetFocus = function () {
+    HomeUI.prototype.resetFocus = function () {
         console.log(" resetFocus ");
         if (this._uiFocused) {
             if (this._uiFocused.parent) {
@@ -34,12 +42,12 @@ var HomeUI = (function (_super) {
             this._mbtnFocused = null;
         }
     };
-    p.goHome = function () {
+    HomeUI.prototype.goHome = function () {
         console.log(" ---------- HOME ---------- ");
         this._pageFocusedPrev = this._pageFocused = GamePages.HOME;
         this.imgBg.source = "homeBg_jpg";
     };
-    p.mbtnHandler = function (evt) {
+    HomeUI.prototype.mbtnHandler = function (evt) {
         /// 已经选中不应当再处理!
         if (evt.currentTarget == this._mbtnFocused) {
             console.log(evt.currentTarget.name, "已经选中不应当再处理!");
@@ -82,10 +90,10 @@ var HomeUI = (function (_super) {
         }
         this.dispatchEventWith(GameEvents.EVT_LOAD_PAGE, false, this._pageFocused);
     };
-    p.createChildren = function () {
+    HomeUI.prototype.createChildren = function () {
         _super.prototype.createChildren.call(this);
     };
-    p.pageReadyHandler = function (pageName) {
+    HomeUI.prototype.pageReadyHandler = function (pageName) {
         var _this = this;
         console.log("页面就绪:", pageName);
         /// 页面加载完成，所有非焦点按钮解锁
@@ -157,4 +165,5 @@ var HomeUI = (function (_super) {
     };
     return HomeUI;
 }(eui.Component));
-egret.registerClass(HomeUI,'HomeUI');
+__reflect(HomeUI.prototype, "HomeUI");
+//# sourceMappingURL=HomeUI.js.map

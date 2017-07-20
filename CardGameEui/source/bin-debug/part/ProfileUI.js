@@ -1,15 +1,23 @@
 /**
  * Created by egret on 2016/1/21.
  */
+var __reflect = (this && this.__reflect) || function (p, c, t) {
+    p.__class__ = c, t ? t.push(c) : t = [c], p.__types__ = p.__types__ ? t.concat(p.__types__) : t;
+};
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
 var ProfileUI = (function (_super) {
     __extends(ProfileUI, _super);
     function ProfileUI() {
-        _super.call(this);
-        this.addEventListener(eui.UIEvent.COMPLETE, this.uiCompHandler, this);
-        this.skinName = "resource/custom_skins/profileUISkin.exml";
+        var _this = _super.call(this) || this;
+        _this.addEventListener(eui.UIEvent.COMPLETE, _this.uiCompHandler, _this);
+        _this.skinName = "resource/custom_skins/profileUISkin.exml";
+        return _this;
     }
-    var d = __define,c=ProfileUI,p=c.prototype;
-    p.uiCompHandler = function () {
+    ProfileUI.prototype.uiCompHandler = function () {
         var _this = this;
         console.log("\t\tProfileUI uiCompHandler");
         /// 返回逻辑
@@ -29,10 +37,11 @@ var ProfileUI = (function (_super) {
         this.listSkills.itemRendererSkinName = "profileSkillListIRSkin";
         this.listSkills.dataProvider = new eui.ArrayCollection(dsListSkills);
     };
-    p.createChildren = function () {
+    ProfileUI.prototype.createChildren = function () {
         _super.prototype.createChildren.call(this);
         this.scrListSkills.horizontalScrollBar = null;
     };
     return ProfileUI;
 }(eui.Component));
-egret.registerClass(ProfileUI,'ProfileUI');
+__reflect(ProfileUI.prototype, "ProfileUI");
+//# sourceMappingURL=ProfileUI.js.map

@@ -1,23 +1,30 @@
 /**
  * Created by egret on 2016/1/20.
  */
+var __reflect = (this && this.__reflect) || function (p, c, t) {
+    p.__class__ = c, t ? t.push(c) : t = [c], p.__types__ = p.__types__ ? t.concat(p.__types__) : t;
+};
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
 var TrueLoadingUI = (function (_super) {
     __extends(TrueLoadingUI, _super);
     function TrueLoadingUI() {
-        var _this = this;
-        _super.call(this);
-        this.addEventListener(egret.Event.REMOVED_FROM_STAGE, function () {
+        var _this = _super.call(this) || this;
+        _this.addEventListener(egret.Event.REMOVED_FROM_STAGE, function () {
             if (_this.hasEventListener(egret.Event.ENTER_FRAME)) {
                 _this.removeEventListener(egret.Event.ENTER_FRAME, _this.runLoading, _this);
             }
-        }, this);
-        this.addEventListener(egret.Event.ADDED_TO_STAGE, function () {
+        }, _this);
+        _this.addEventListener(egret.Event.ADDED_TO_STAGE, function () {
             _this.setProgress(0, 1);
             _this.addEventListener(egret.Event.ENTER_FRAME, _this.runLoading, _this);
-        }, this);
+        }, _this);
+        return _this;
     }
-    var d = __define,c=TrueLoadingUI,p=c.prototype;
-    p.createChildren = function () {
+    TrueLoadingUI.prototype.createChildren = function () {
         _super.prototype.createChildren.call(this);
         this._loadingRun = new egret.Bitmap(RES.getRes("loading_run"));
         this.addChild(this._loadingRun);
@@ -37,14 +44,15 @@ var TrueLoadingUI = (function (_super) {
         this._txProgress.strokeColor = 0;
         this.addChild(this._txProgress);
     };
-    p.runLoading = function (evt) {
+    TrueLoadingUI.prototype.runLoading = function (evt) {
         this._loadingRun.rotation += 3;
     };
-    p.setProgress = function (itemsLoaded, itemsTotal) {
+    TrueLoadingUI.prototype.setProgress = function (itemsLoaded, itemsTotal) {
         if (this._txProgress) {
             this._txProgress.text = Math.round(itemsLoaded / itemsTotal * 100) + "%";
         }
     };
     return TrueLoadingUI;
 }(eui.Group));
-egret.registerClass(TrueLoadingUI,'TrueLoadingUI');
+__reflect(TrueLoadingUI.prototype, "TrueLoadingUI");
+//# sourceMappingURL=TrueLoadingUI.js.map

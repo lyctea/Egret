@@ -1,14 +1,21 @@
+var __reflect = (this && this.__reflect) || function (p, c, t) {
+    p.__class__ = c, t ? t.push(c) : t = [c], p.__types__ = p.__types__ ? t.concat(p.__types__) : t;
+};
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
 /**
  * Created by egret on 2016/1/26.
  */
 var Toast = (function (_super) {
     __extends(Toast, _super);
     function Toast(msg, w, h) {
-        var _this = this;
-        _super.call(this);
+        var _this = _super.call(this) || this;
         console.log("Toast:", msg);
         var bg = new egret.Bitmap(Toast._txtrToastBg);
-        this.addChild(bg);
+        _this.addChild(bg);
         var tx = new egret.TextField;
         tx.multiline = true;
         tx.size = 20;
@@ -22,14 +29,14 @@ var Toast = (function (_super) {
         tx.width = w * .84;
         tx.x = (Toast._txtrToastBg.textureWidth - tx.width) / 2;
         tx.y = 6;
-        this.addChild(tx);
+        _this.addChild(tx);
         bg.height = 12 + tx.height;
-        this.anchorOffsetX = this.width * .5;
-        this.anchorOffsetY = this.height * .5;
-        this.x = w * .5;
-        this.y = h * .618;
-        this.alpha = 0;
-        egret.Tween.get(this)
+        _this.anchorOffsetX = _this.width * .5;
+        _this.anchorOffsetY = _this.height * .5;
+        _this.x = w * .5;
+        _this.y = h * .618;
+        _this.alpha = 0;
+        egret.Tween.get(_this)
             .to({ alpha: 1 }, 800, egret.Ease.quintOut)
             .wait(1600)
             .to({ alpha: 0 }, 1200, egret.Ease.quintIn).call(function () {
@@ -37,8 +44,8 @@ var Toast = (function (_super) {
                 _this.parent.removeChild(_this);
             }
         });
+        return _this;
     }
-    var d = __define,c=Toast,p=c.prototype;
     Toast.init = function (cont, txtrToastBg) {
         console.log("Toast.init", txtrToastBg);
         this._cont = cont;
@@ -52,4 +59,5 @@ var Toast = (function (_super) {
     };
     return Toast;
 }(egret.DisplayObjectContainer));
-egret.registerClass(Toast,'Toast');
+__reflect(Toast.prototype, "Toast");
+//# sourceMappingURL=Toast.js.map

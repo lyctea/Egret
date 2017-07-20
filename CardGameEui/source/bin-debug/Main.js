@@ -26,15 +26,23 @@
 //  EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
 //////////////////////////////////////////////////////////////////////////////////////
+var __reflect = (this && this.__reflect) || function (p, c, t) {
+    p.__class__ = c, t ? t.push(c) : t = [c], p.__types__ = p.__types__ ? t.concat(p.__types__) : t;
+};
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
 var Main = (function (_super) {
     __extends(Main, _super);
     function Main() {
-        _super.apply(this, arguments);
-        this.isThemeLoadEnd = false;
-        this.isResourceLoadEnd = false;
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.isThemeLoadEnd = false;
+        _this.isResourceLoadEnd = false;
+        return _this;
     }
-    var d = __define,c=Main,p=c.prototype;
-    p.createChildren = function () {
+    Main.prototype.createChildren = function () {
         _super.prototype.createChildren.call(this);
         //inject the custom material parser
         //注入自定义的素材解析器
@@ -54,7 +62,7 @@ var Main = (function (_super) {
      * 配置文件加载完成,开始预加载皮肤主题资源和preload资源组。
      * Loading of configuration file is complete, start to pre-load the theme configuration file and the preload resource group
      */
-    p.onConfigComplete = function (event) {
+    Main.prototype.onConfigComplete = function (event) {
         RES.removeEventListener(RES.ResourceEvent.CONFIG_COMPLETE, this.onConfigComplete, this);
         // load skin theme configuration file, you can manually modify the file. And replace the default skin.
         //加载皮肤主题配置文件,可以手动修改这个文件。替换默认皮肤。
@@ -70,7 +78,7 @@ var Main = (function (_super) {
      * 主题文件加载完成,开始预加载
      * Loading of theme configuration file is complete, start to pre-load the
      */
-    p.onThemeLoadComplete = function () {
+    Main.prototype.onThemeLoadComplete = function () {
         console.log("theme load ok:", egret.getTimer());
         this.isThemeLoadEnd = true;
         this.createScene();
@@ -79,7 +87,7 @@ var Main = (function (_super) {
      * preload资源组加载完成
      * preload resource group is loaded
      */
-    p.onResourceLoadComplete = function (event) {
+    Main.prototype.onResourceLoadComplete = function (event) {
         switch (event.groupName) {
             case "loading":
                 console.log("loading ok:", egret.getTimer());
@@ -105,13 +113,13 @@ var Main = (function (_super) {
                 break;
         }
     };
-    p.clearRESEvents = function () {
+    Main.prototype.clearRESEvents = function () {
         //RES.removeEventListener(RES.ResourceEvent.GROUP_COMPLETE,this.onResourceLoadComplete,this);
         //RES.removeEventListener(RES.ResourceEvent.GROUP_LOAD_ERROR,this.onResourceLoadError,this);
         //RES.removeEventListener(RES.ResourceEvent.GROUP_PROGRESS,this.onResourceProgress,this);
         //RES.removeEventListener(RES.ResourceEvent.ITEM_LOAD_ERROR,this.onItemLoadError,this);
     };
-    p.createScene = function () {
+    Main.prototype.createScene = function () {
         console.log("createScene:", this.isThemeLoadEnd, this.isResourceLoadEnd);
         if (this.isThemeLoadEnd && this.isResourceLoadEnd) {
             this.startCreateScene();
@@ -121,14 +129,14 @@ var Main = (function (_super) {
      * 资源组加载出错
      *  The resource group loading failed
      */
-    p.onItemLoadError = function (event) {
+    Main.prototype.onItemLoadError = function (event) {
         console.warn("Url:" + event.resItem.url + " has failed to load");
     };
     /**
      * 资源组加载出错
      * Resource group loading failed
      */
-    p.onResourceLoadError = function (event) {
+    Main.prototype.onResourceLoadError = function (event) {
         //TODO
         console.warn("Group:" + event.groupName + " has failed to load");
         //忽略加载失败的项目
@@ -139,7 +147,7 @@ var Main = (function (_super) {
      * preload资源组加载进度
      * loading process of preload resource
      */
-    p.onResourceProgress = function (event) {
+    Main.prototype.onResourceProgress = function (event) {
         switch (event.groupName) {
             case "loading":
                 this.loadingView.setProgress(event.itemsLoaded, event.itemsTotal);
@@ -155,7 +163,7 @@ var Main = (function (_super) {
      * 创建场景界面
      * Create scene interface
      */
-    p.startCreateScene = function () {
+    Main.prototype.startCreateScene = function () {
         var _this = this;
         console.log("this._trueLoadingUI.parent:", Boolean(this._trueLoadingUI.parent));
         /// 主页特殊，其他页都需要传参数
@@ -170,7 +178,7 @@ var Main = (function (_super) {
         }, this);
         this.addChild(this._homeUI);
     };
-    p.loadPage = function (pageName) {
+    Main.prototype.loadPage = function (pageName) {
         this.addChild(this._trueLoadingUI);
         this.idLoading = pageName;
         switch (pageName) {
@@ -183,7 +191,7 @@ var Main = (function (_super) {
                 break;
         }
     };
-    p.pageLoadedHandler = function (name) {
+    Main.prototype.pageLoadedHandler = function (name) {
         if (name != "home") {
             this._homeUI.pageReadyHandler(this.idLoading);
         }
@@ -193,4 +201,5 @@ var Main = (function (_super) {
     };
     return Main;
 }(eui.UILayer));
-egret.registerClass(Main,'Main');
+__reflect(Main.prototype, "Main");
+//# sourceMappingURL=Main.js.map

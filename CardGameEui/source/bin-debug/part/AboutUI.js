@@ -1,15 +1,23 @@
 /**
  * Created by egret on 2016/1/26.
  */
+var __reflect = (this && this.__reflect) || function (p, c, t) {
+    p.__class__ = c, t ? t.push(c) : t = [c], p.__types__ = p.__types__ ? t.concat(p.__types__) : t;
+};
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
 var AboutUI = (function (_super) {
     __extends(AboutUI, _super);
     function AboutUI() {
-        _super.call(this);
-        this.addEventListener(eui.UIEvent.COMPLETE, this.uiCompHandler, this);
-        this.skinName = "resource/custom_skins/aboutUISkin.exml";
+        var _this = _super.call(this) || this;
+        _this.addEventListener(eui.UIEvent.COMPLETE, _this.uiCompHandler, _this);
+        _this.skinName = "resource/custom_skins/aboutUISkin.exml";
+        return _this;
     }
-    var d = __define,c=AboutUI,p=c.prototype;
-    p.uiCompHandler = function () {
+    AboutUI.prototype.uiCompHandler = function () {
         var _this = this;
         console.log("\t\tAboutUI uiCompHandler");
         this.btnClose.addEventListener(egret.TouchEvent.TOUCH_TAP, function () {
@@ -23,4 +31,5 @@ var AboutUI = (function (_super) {
     };
     return AboutUI;
 }(eui.Component));
-egret.registerClass(AboutUI,'AboutUI');
+__reflect(AboutUI.prototype, "AboutUI");
+//# sourceMappingURL=AboutUI.js.map
